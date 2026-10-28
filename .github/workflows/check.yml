@@ -11,6 +11,9 @@ permissions:
 env:
   # Do not install git hooks in CI.
   LEFTHOOK: 0
+  # src/shared/browser.env.ts validates this at import time; the unit tests load it and CI has
+  # no .env. Any http(s) URL will do: nothing is requested during `bun run check`.
+  VITE_NELCOTA_URL: http://127.0.0.1:8000
 
 concurrency:
   group: check-${{ github.ref }}
