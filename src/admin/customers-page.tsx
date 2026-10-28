@@ -6,6 +6,7 @@ import { useDeferredValue, useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { QueryErrorAlert } from "@/components/query-error-alert";
+import { SegmentedControl } from "@/components/segmented-control";
 import { Badge } from "@/components/ui/badge";
 import {
   Empty,
@@ -28,26 +29,24 @@ import {
 import { formatCents, formatDocument } from "@/shared/format";
 
 import { organizationsQuery } from "./admin.queries";
+import {
+  CUSTOMER_STATUS_OPTIONS,
+  type CustomerStatusFilter,
+  filterCustomers,
+} from "./customer-filters";
 import { NewOrganizationDialog } from "./new-organization-dialog";
 
 const MAX_SEARCH_LENGTH = 100;
 
-/** Customer list with search by name or CPF/CNPJ. */
+/** Customer list with search by name or CPF/CNPJ and a situation filter. */
 export function CustomersPage() {
   const organizations = useQuery(organizationsQuery);
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<CustomerStatusFilter>("all");
   const deferredSearch = useDeferredValue(search);
 
-  const term = deferredSearch.trim().toLowerCase();
-  const digits = term.replaceAll(/\D/g, "");
-  const visible = (organizations.data ?? []).filter((organization) => {
-    if (term === "") {
-      return true;
-    }
-    const matchesName = organization.name.toLowerCase().includes(term);
-    const matchesDocument = digits !== "" && organization.document.includes(digits);
-    return matchesName || matchesDocument;
-  });
+  const isFiltering = deferredSearch.trim() !== "" || status !== "all";
+  const visible = filterCustomers(organizations.data ?? [], deferredSearch, status);
 
   return (
     <>
@@ -57,23 +56,31 @@ export function CustomersPage() {
         actions={<NewOrganizationDialog />}
       />
       <Panel className="flex flex-col gap-5">
-        <div className="flex max-w-sm flex-col gap-2">
-          <Label htmlFor="customer-search" className="sr-only">
-            Buscar por nome ou CPF/CNPJ
-          </Label>
-          <InputGroup>
-            <InputGroupAddon>
-              <SearchIcon aria-hidden="true" />
-            </InputGroupAddon>
-            <InputGroupInput
-              id="customer-search"
-              type="search"
-              placeholder="Buscar por nome ou CPF/CNPJ"
-              maxLength={MAX_SEARCH_LENGTH}
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-          </InputGroup>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex w-full max-w-sm flex-col gap-2">
+            <Label htmlFor="customer-search" className="sr-only">
+              Buscar por nome ou CPF/CNPJ
+            </Label>
+            <InputGroup>
+              <InputGroupAddon>
+                <SearchIcon aria-hidden="true" />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="customer-search"
+                type="search"
+                placeholder="Buscar por nome ou CPF/CNPJ"
+                maxLength={MAX_SEARCH_LENGTH}
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+            </InputGroup>
+          </div>
+          <SegmentedControl
+            label="Situação"
+            options={CUSTOMER_STATUS_OPTIONS}
+            value={status}
+            onChange={setStatus}
+          />
         </div>
         {organizations.isPending && <Skeleton className="h-64 w-full" />}
         {organizations.isError && <QueryErrorAlert onRetry={() => void organizations.refetch()} />}
@@ -83,11 +90,11 @@ export function CustomersPage() {
               <EmptyMedia variant="icon">
                 <BuildingIcon />
               </EmptyMedia>
-              <EmptyTitle>{term === "" ? "Nenhuma empresa ainda" : "Nada encontrado"}</EmptyTitle>
+              <EmptyTitle>{isFiltering ? "Nada encontrado" : "Nenhuma empresa ainda"}</EmptyTitle>
               <EmptyDescription>
-                {term === ""
-                  ? 'Use "Nova empresa" para cadastrar o primeiro cliente.'
-                  : "Nenhuma empresa corresponde à busca."}
+                {isFiltering
+                  ? "Nenhuma empresa corresponde aos filtros."
+                  : 'Use "Nova empresa" para cadastrar o primeiro cliente.'}
               </EmptyDescription>
             </EmptyHeader>
           </Empty>
