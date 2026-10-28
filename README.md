@@ -61,7 +61,7 @@ Mercado Pago credentials and the webhook secret are listed in `.env.example`. A 
 | `bun run format`   | Formats everything with Oxfmt                                       |
 | `bun run db:types` | Regenerates the database types after a migration                    |
 
-Git hooks (Lefthook) run the same checks before every commit, and CI runs `bun run check` on every push.
+Git hooks (Lefthook) run the same checks before every commit. CI runs them on every push and pull request, plus the production build, a dependency audit and the database tests against a fresh `nelcota dev` environment.
 
 ## Project layout
 
