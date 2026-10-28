@@ -39,13 +39,15 @@ jobs:
       # tsc and Knip do not exercise the Vite/TanStack Start bundling; the build does.
       - run: bun run build
 
+      # Blocks on high and critical advisories, including transitive and dev-only packages. For
+      # an advisory with no fix yet, add `--ignore=<GHSA id>` with a TODO naming it.
       - run: bun audit --audit-level=high
 
   database-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      # Same version as the local environment (see README). The checksum is the one published
+      # Same version the README asks developers to install. The checksum is the one published
       # next to the binary in the release.
       NELCOTA_VERSION: v0.5.5
       NELCOTA_SHA256: 038711290887c2e9967643b78395d779bd616e43fbf2fc7f6aa737370301966e
@@ -72,9 +74,22 @@ jobs:
       - name: Start Postgres and the Nelcota server
         run: |
           nelcota dev > nelcota-dev.log 2>&1 &
+          dev_pid=$!
+          masked=false
           for attempt in $(seq 1 60); do
+            # The dev environment generates its own secrets; mask them before any log is printed.
+            if [ "$masked" = false ] && [ -f .nelcota/dev.env ]; then
+              grep -E '^(POSTGRES_PASSWORD|AUTHENTICATOR_PASSWORD|JWT_PRIVATE_KEY|ADMIN_PASSWORD)=' .nelcota/dev.env \
+                | cut -d= -f2- | sed 's/^/::add-mask::/'
+              masked=true
+            fi
             if grep -q "nelcota is up" nelcota-dev.log; then
               break
+            fi
+            if ! kill -0 "$dev_pid" 2>/dev/null; then
+              echo "nelcota dev exited before it was ready"
+              cat nelcota-dev.log
+              exit 1
             fi
             if [ "$attempt" = 60 ]; then
               echo "the Nelcota dev environment did not start in time"
@@ -83,10 +98,8 @@ jobs:
             fi
             sleep 2
           done
-          # The dev environment generates its own Postgres password; keep it out of the logs.
-          password=$(grep '^POSTGRES_PASSWORD=' .nelcota/dev.env | cut -d= -f2-)
+          password=$(grep '^POSTGRES_PASSWORD=' .nelcota/dev.env | cut -d= -f2- | jq --raw-input --raw-output '@uri')
           port=$(grep '^DB_PORT=' .nelcota/dev.env | cut -d= -f2-)
-          echo "::add-mask::${password}"
           echo "DATABASE_URL=postgres://postgres:${password}@127.0.0.1:${port}/postgres" >> "$GITHUB_ENV"
 
       - run: nelcota migrate
