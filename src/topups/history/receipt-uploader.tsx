@@ -7,8 +7,8 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui
 import { Spinner } from "@/components/ui/spinner";
 import { getNelcotaClient } from "@/shared/nelcota";
 
+import { TOPUPS_QUERY_KEY } from "../topups.queries";
 import { RECEIPT_ACCEPT, checkReceiptFile, describeUploadError, receiptPath } from "./receipt";
-import { TOPUPS_QUERY_KEY } from "./topups.queries";
 
 interface ReceiptUploaderProps {
   readonly organizationId: string;

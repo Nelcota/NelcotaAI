@@ -4,7 +4,7 @@ import { PixElementType } from "pix-utils/dist/main/types/pixElements";
 
 import { CENTS_PER_REAL } from "@/shared/money";
 
-import { InvalidPixPaymentError } from "./topups.errors";
+import { InvalidPixPaymentError } from "../topups.errors";
 
 // The 99-character merchant account field includes 22 characters of Pix headers.
 const MAX_PIX_KEY_LENGTH = 77;

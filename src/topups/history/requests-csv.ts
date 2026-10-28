@@ -3,7 +3,7 @@ import { unparse } from "papaparse";
 import { formatDateTime } from "@/shared/format";
 import { centsToBrlInput } from "@/shared/money";
 
-import { type TopupStatus, describeTopupStatus } from "./topup-status";
+import { type TopupStatus, describeTopupStatus } from "../topup-status";
 
 /** The fields of a request that go into the spreadsheet. */
 interface ExportableRequest {

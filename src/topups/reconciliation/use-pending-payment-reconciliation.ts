@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
-import { readAccessToken } from "./access-token";
+import { readAccessToken } from "../access-token";
+import { TOPUPS_QUERY_KEY, TOPUP_REFRESH_INTERVAL_IN_MS } from "../topups.queries";
 import { onlinePendingRequestIds, reconcilePendingPayments } from "./pending-payments.service";
-import { TOPUPS_QUERY_KEY, TOPUP_REFRESH_INTERVAL_IN_MS } from "./topups.queries";
 
 type PendingRequest = Parameters<typeof onlinePendingRequestIds>[0][number];
 type ReconciliationBatch = {

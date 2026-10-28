@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 
-import { TOPUPS_QUERY_KEY } from "./topups.queries";
+import { TOPUPS_QUERY_KEY } from "../topups.queries";
 
 /** Refreshes dependent financial views once a pending snapshot changes, without refetching itself. */
 export async function synchronizeTopups(

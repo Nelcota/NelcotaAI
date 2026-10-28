@@ -8,14 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { PixPaymentPanel } from "../pix-payment-panel";
+import { TOPUPS_QUERY_KEY, pixSettingsQuery } from "../topups.queries";
 import { CardPaymentStep } from "./card-payment-step";
 import { createCheckoutScope } from "./checkout-scope";
 import type { CheckoutMethod } from "./payment-method-picker";
 import type { CreatedPix } from "./pix-checkout";
-import { PixPaymentPanel } from "./pix-payment-panel";
 import { TopupAmountForm } from "./topup-amount-form";
 import { TopupOutcome } from "./topup-outcome";
-import { TOPUPS_QUERY_KEY, pixSettingsQuery } from "./topups.queries";
 
 /** Where the customer is in the checkout. */
 type CheckoutStep =

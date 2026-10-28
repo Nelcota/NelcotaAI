@@ -1,7 +1,7 @@
 import type { z } from "zod";
 
+import type { pixSettingsSchema } from "../topups.schemas";
 import type { PixReceiver } from "./pix-instructions";
-import type { pixSettingsSchema } from "./topups.schemas";
 
 /**
  * Extracts the receiving data from the settings.

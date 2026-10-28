@@ -68,7 +68,7 @@ Git hooks (Lefthook) run the same checks before every commit. CI runs them on ev
 ```
 src/
   auth/        sign in, sign up, magic link, password recovery, session cache
-  topups/      customer dashboard, Pix and card checkout, history, CSV export
+  topups/      customer pages, with checkout/, overview/, history/ and reconciliation/
   payments/    Mercado Pago server functions, webhook, reconciliation
   admin/       pending requests, customers, history, settings
   layout/      app shell, theme, toaster

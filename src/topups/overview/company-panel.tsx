@@ -9,8 +9,7 @@ import { Panel } from "@/components/panel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate, formatDocument, formatInteger } from "@/shared/format";
 
-import { RequestTopupDialog } from "./request-topup-dialog";
-import { organizationBalanceQuery } from "./topups.queries";
+import { organizationBalanceQuery } from "../topups.queries";
 
 interface CompanyPanelProps {
   readonly organizationId: string;
@@ -18,6 +17,8 @@ interface CompanyPanelProps {
   readonly organizationDocument: string;
   readonly isOrganizationBlocked: boolean;
   readonly pendingCount: number | null;
+  /** Call to action rendered at the bottom, such as the top-up dialog trigger. */
+  readonly action: ReactNode;
 }
 
 /** Right-hand card: the company, its balance and quick facts. */
@@ -27,6 +28,7 @@ export function CompanyPanel({
   organizationDocument,
   isOrganizationBlocked,
   pendingCount,
+  action,
 }: CompanyPanelProps) {
   const balance = useQuery(organizationBalanceQuery(organizationId));
   const lastCredit = balance.data?.last_credit_cents ?? null;
@@ -71,7 +73,7 @@ export function CompanyPanel({
           {pendingCount == null ? "—" : formatInteger(pendingCount)}
         </Fact>
       </dl>
-      {isOrganizationBlocked === false && <RequestTopupDialog trigger="outline" />}
+      {action}
     </Panel>
   );
 }

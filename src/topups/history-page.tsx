@@ -22,9 +22,9 @@ import { Spinner } from "@/components/ui/spinner";
 import { toSaoPauloCalendarDate } from "@/shared/dates";
 import { formatDate, formatInteger, formatRequestCount } from "@/shared/format";
 
-import { RequestList } from "./request-list";
-import { RequestTopupDialog } from "./request-topup-dialog";
-import { requestsToCsv } from "./requests-csv";
+import { RequestTopupDialog } from "./checkout/request-topup-dialog";
+import { RequestList } from "./history/request-list";
+import { requestsToCsv } from "./history/requests-csv";
 import {
   organizationBalanceQuery,
   pendingTopupRequestsQuery,

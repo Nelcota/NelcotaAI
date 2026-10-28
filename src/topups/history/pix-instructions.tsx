@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/input-group";
 import { formatCents } from "@/shared/format";
 
+import { useCopyToClipboard } from "../use-copy-to-clipboard";
 import { buildPixCode, toTransactionId } from "./pix-brcode";
-import { useCopyToClipboard } from "./use-copy-to-clipboard";
 
 /** Receiving data configured by the admin. */
 export interface PixReceiver {

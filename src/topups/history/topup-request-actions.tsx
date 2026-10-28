@@ -14,12 +14,12 @@ import { describeApiError } from "@/shared/api-error";
 import { formatCents } from "@/shared/format";
 import { getNelcotaClient } from "@/shared/nelcota";
 
+import { PixPaymentPanel } from "../pix-payment-panel";
+import { TOPUPS_QUERY_KEY, pixSettingsQuery } from "../topups.queries";
+import type { TopupPaymentMethod, topupRequestSchema } from "../topups.schemas";
 import { PixInstructions } from "./pix-instructions";
-import { PixPaymentPanel } from "./pix-payment-panel";
 import { toPixReceiver } from "./pix-receiver";
 import { ReceiptUploader } from "./receipt-uploader";
-import { TOPUPS_QUERY_KEY, pixSettingsQuery } from "./topups.queries";
-import type { TopupPaymentMethod, topupRequestSchema } from "./topups.schemas";
 
 const CANCEL_ERRORS: ReadonlyMap<string, string> = new Map([
   ["P0020", "Este pagamento ainda está sendo conferido. Aguarde a situação antes de cancelar."],

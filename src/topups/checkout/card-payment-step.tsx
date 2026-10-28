@@ -14,8 +14,8 @@ import {
 } from "@/payments";
 import { formatCents } from "@/shared/format";
 
-import { readAccessToken } from "./access-token";
-import { describePaymentFailure } from "./payment-messages";
+import { readAccessToken } from "../access-token";
+import { describePaymentFailure } from "../payment-messages";
 
 interface CardPaymentStepProps {
   readonly amountInCents: number;

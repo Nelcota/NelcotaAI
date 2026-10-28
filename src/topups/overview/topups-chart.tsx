@@ -6,7 +6,7 @@ import { SegmentedControl } from "@/components/segmented-control";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCompactCents, formatShortMonth } from "@/shared/format";
 
-import { CHART_PERIODS, type ChartPeriod, monthlyTopupsQuery } from "./topups.queries";
+import { CHART_PERIODS, type ChartPeriod, monthlyTopupsQuery } from "../topups.queries";
 import { yearOverYear } from "./trend";
 
 const PERIOD_OPTIONS = [

@@ -1,6 +1,6 @@
 import { refreshTopupPaymentFn } from "@/payments";
 
-import type { TopupPaymentMethod } from "./topups.schemas";
+import type { TopupPaymentMethod } from "../topups.schemas";
 
 type PendingRequest = {
   readonly id: string;

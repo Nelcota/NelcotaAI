@@ -13,10 +13,12 @@ import { REVALIDATE_AFTER_SUBMIT } from "@/shared/form-validation";
 import { formatCents, formatCentsParts } from "@/shared/format";
 import { parseBrlToCents } from "@/shared/money";
 
-import { readAccessToken } from "./access-token";
+import { readAccessToken } from "../access-token";
+import { describePaymentFailure, describePixCreationError } from "../payment-messages";
+import { PixCreationError } from "../topups.errors";
+import { createTopupAmountSchema } from "../topups.schemas";
 import { amountDigits, applyAmountKey, maskAmountInput } from "./amount-mask";
 import { formatCompactReais } from "./compact-reais";
-import { describePaymentFailure, describePixCreationError } from "./payment-messages";
 import { type CheckoutMethod, PaymentMethodPicker } from "./payment-method-picker";
 import {
   completePixSubmission,
@@ -24,8 +26,6 @@ import {
   type PixSubmission,
   type PixCreationOutcome,
 } from "./pix-checkout";
-import { PixCreationError } from "./topups.errors";
-import { createTopupAmountSchema } from "./topups.schemas";
 
 // Quick picks, in reais as the customer reads them; out-of-range ones are hidden.
 const SUGGESTED_AMOUNTS = ["50", "100", "200", "500"] as const;

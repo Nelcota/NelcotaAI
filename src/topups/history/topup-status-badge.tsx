@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 
-import { type TopupStatus, describeTopupStatus } from "./topup-status";
+import { type TopupStatus, describeTopupStatus } from "../topup-status";
 
 // One colour per outcome: green when money was credited, brand orange while waiting, red when
 // the request was refused, grey when the customer withdrew it.

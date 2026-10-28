@@ -5,8 +5,8 @@ import { QueryClient } from "@tanstack/react-query";
 
 import type { Database } from "@/shared/database";
 
+import { pendingTopupRequestsQuery } from "../topups.queries";
 import { onlinePendingRequestIds, reconcilePendingPayments } from "./pending-payments.service";
-import { pendingTopupRequestsQuery } from "./topups.queries";
 
 const PENDING = {
   id: "test-request",
