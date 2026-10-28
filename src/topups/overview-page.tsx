@@ -12,16 +12,16 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { formatRequestCount } from "@/shared/format";
 
-import { CompanyPanel } from "./company-panel";
-import { RequestTopupDialog } from "./request-topup-dialog";
-import { MonthlyTopupsChart, PeriodControl } from "./topups-chart";
+import { RequestTopupDialog } from "./checkout/request-topup-dialog";
+import { CompanyPanel } from "./overview/company-panel";
+import { MonthlyTopupsChart, PeriodControl } from "./overview/topups-chart";
+import { averageOf, lastMonthChange, yearOverYear } from "./overview/trend";
 import {
   type ChartPeriod,
   monthlyTopupsQuery,
   organizationBalanceQuery,
   pendingTopupRequestsQuery,
 } from "./topups.queries";
-import { averageOf, lastMonthChange, yearOverYear } from "./trend";
 
 const DEFAULT_PERIOD: ChartPeriod = 12;
 
@@ -129,6 +129,7 @@ export function TopupOverviewPage({
         organizationDocument={organizationDocument}
         isOrganizationBlocked={isOrganizationBlocked}
         pendingCount={pendingCount}
+        action={isOrganizationBlocked === false ? <RequestTopupDialog trigger="outline" /> : null}
       />
     </div>
   );

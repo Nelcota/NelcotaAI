@@ -35,12 +35,9 @@ test("checks random numeric CNPJs against the library", async () => {
     return prefix + CNPJ.checksum(prefix);
   });
 
-  // Sent as one comma-separated string: bun:sql up to 1.4.3 turns an array parameter into
-  // "a,b,c", which Postgres rejects as an array literal.
-  // TODO: pass `${documents}::text[]` to unnest once packageManager is Bun 1.4.4 or newer.
   const rows: { valid: boolean }[] =
     await transaction.sql`SELECT internal.is_valid_tax_document(document) AS valid
-    FROM unnest(string_to_array(${documents.join(",")}, ',')) AS document`;
+    FROM unnest(${documents}::text[]) AS document`;
 
   expect(rows).toHaveLength(20);
   expect(rows.every((row) => row.valid === true)).toBe(true);

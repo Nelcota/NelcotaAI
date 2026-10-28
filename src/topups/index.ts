@@ -2,8 +2,8 @@ export { CustomerGate } from "./customer-gate";
 export { TopupHistoryPage } from "./history-page";
 export { HowItWorksPage } from "./how-it-works-page";
 export { TopupOverviewPage } from "./overview-page";
-export { TopupStatusBadge } from "./topup-status-badge";
-export { MonthlyTopupsChart, PeriodControl } from "./topups-chart";
+export { TopupStatusBadge } from "./history/topup-status-badge";
+export { MonthlyTopupsChart, PeriodControl } from "./overview/topups-chart";
 export {
   type ChartPeriod,
   TOPUPS_QUERY_KEY,
@@ -11,8 +11,9 @@ export {
   pendingTopupRequestsQuery,
   pixSettingsQuery,
 } from "./topups.queries";
-export { averageOf, lastMonthChange, yearOverYear } from "./trend";
+export { averageOf, lastMonthChange, yearOverYear } from "./overview/trend";
+export { describePendingTopupNotifications } from "./pending-notifications";
 
-export { useTopupSynchronization } from "./use-topup-synchronization";
+export { useTopupSynchronization } from "./reconciliation/use-topup-synchronization";
 
-export { usePendingPaymentReconciliation } from "./use-pending-payment-reconciliation";
+export { usePendingPaymentReconciliation } from "./reconciliation/use-pending-payment-reconciliation";

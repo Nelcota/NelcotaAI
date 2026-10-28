@@ -1,0 +1,13 @@
+node_modules
+dist
+.output
+.nitro
+.tanstack
+.nelcota
+.git
+.github
+.claude
+.env
+.env.*
+*.log
+coverage

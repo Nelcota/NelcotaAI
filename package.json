@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "bunx --bun vite dev --port 3000",
     "build": "bunx --bun vite build",
+    "start": "bun dist/server/server.js",
     "db:migrate": "nelcota migrate",
     "db:types": "nelcota types -o src/shared/database.ts",
     "format": "oxfmt",
@@ -62,5 +63,5 @@
     "typescript": "7.0.2",
     "vite": "8.3.4"
   },
-  "packageManager": "bun@1.4.2"
+  "packageManager": "bun@1.4.4"
 }

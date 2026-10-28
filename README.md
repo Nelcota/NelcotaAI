@@ -56,6 +56,7 @@ Mercado Pago credentials and the webhook secret are listed in `.env.example`. A 
 | ------------------ | ------------------------------------------------------------------- |
 | `bun run dev`      | Development server with hot reload                                  |
 | `bun run build`    | Production build in `dist/`                                         |
+| `bun run start`    | Serves the production build (port from `PORT`, default 3000)        |
 | `bun run check`    | Formatting, Oxlint, types, Knip and unit tests (no database needed) |
 | `bun run test:db`  | SQL functions and RLS against the running `nelcota dev` database    |
 | `bun run format`   | Formats everything with Oxfmt                                       |
@@ -63,19 +64,30 @@ Mercado Pago credentials and the webhook secret are listed in `.env.example`. A 
 
 Git hooks (Lefthook) run the same checks before every commit. CI runs them on every push and pull request, plus the production build, a dependency audit and the database tests against a fresh `nelcota dev` environment.
 
+## Deploying
+
+The `Dockerfile` builds the app and serves it with Bun on port 3000. Browser variables are baked in at build time; server secrets come from the environment at runtime:
+
+```sh
+docker build --build-arg VITE_NELCOTA_URL=https://api.example.com -t nelcota-ai .
+docker run --env-file .env -p 3000:3000 nelcota-ai
+```
+
+Point `APP_URL` at the public HTTPS address so Mercado Pago can reach the webhook.
+
 ## Project layout
 
 ```
 src/
   auth/        sign in, sign up, magic link, password recovery, session cache
-  topups/      customer dashboard, Pix and card checkout, history, CSV export
+  topups/      customer pages, with checkout/, overview/, history/ and reconciliation/
   payments/    Mercado Pago server functions, webhook, reconciliation
   admin/       pending requests, customers, history, settings
   layout/      app shell, theme, toaster
   components/  shared UI (shadcn/ui under components/ui)
   shared/      formatting, money, dates, env, generated database types
   routes/      TanStack Start file routes (pt-BR URLs)
-migrations/    SQL migrations V1..V17 and their database tests
+migrations/    SQL migrations V1..V3 and their database tests
 ```
 
 Each feature folder is a package with a public `index.ts`; other packages import only through it. Money is handled in cents, dates in UTC, and every visible string is in Brazilian Portuguese.

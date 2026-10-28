@@ -37,14 +37,11 @@ import {
   organizationMembersQuery,
   organizationQuery,
 } from "./admin.queries";
+import { EditOrganizationDialog } from "./edit-organization-dialog";
 import { LinkUserDialog } from "./link-user-dialog";
+import { RemoveAccessDialog } from "./remove-access-dialog";
 
-const LEDGER_TYPE_LABELS = {
-  topup: "Recarga",
-  adjustment: "Ajuste",
-  usage: "Uso",
-  refund: "Estorno",
-} as const;
+const LEDGER_TYPE_LABELS = { topup: "Recarga", adjustment: "Ajuste" } as const;
 
 const ROLE_LABELS = { owner: "Responsável", member: "Membro" } as const;
 
@@ -115,6 +112,11 @@ export function CustomerDetailPage({ organizationId }: { readonly organizationId
             <Badge variant={isBlocked ? "destructive" : "secondary"}>
               {isBlocked ? "Bloqueada" : "Ativa"}
             </Badge>
+            <EditOrganizationDialog
+              organizationId={organizationId}
+              name={customer.name}
+              document={customer.document}
+            />
             <BlockToggleButton organizationId={organizationId} isBlocked={isBlocked} />
             <AdjustBalanceDialog organizationId={organizationId} />
           </div>
@@ -168,6 +170,7 @@ export function CustomerDetailPage({ organizationId }: { readonly organizationId
                       {ROLE_LABELS[member.role]} · desde {formatDate(member.created_at)}
                     </p>
                   </div>
+                  <RemoveAccessDialog userId={member.user_id} personName={member.name} />
                 </li>
               ))}
             </ul>

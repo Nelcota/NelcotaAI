@@ -1,4 +1,4 @@
-// Messages for the SQLSTATEs each admin action can raise (see migrations V4, V6 and V7).
+// Messages for the SQLSTATEs each admin action can raise (see migrations V1 and V2).
 
 export const CONFIRM_TOPUP_ERRORS: ReadonlyMap<string, string> = new Map([
   ["P0002", "Este pedido não existe mais."],
@@ -25,9 +25,15 @@ export const LINK_USER_ERRORS: ReadonlyMap<string, string> = new Map([
   ["22023", "Informe o nome da pessoa (até 200 caracteres)."],
 ]);
 
+export const REMOVE_ACCESS_ERRORS: ReadonlyMap<string, string> = new Map([
+  ["P0002", "Esta pessoa já não está vinculada à empresa."],
+  ["P0014", "Esta conta é de administrador da plataforma e não pode ser removida aqui."],
+]);
+
 export const ORGANIZATION_ERRORS: ReadonlyMap<string, string> = new Map([
   ["23505", "Já existe uma empresa com este CPF/CNPJ."],
   ["23514", "Confira o nome e o CPF/CNPJ."],
+  ["22023", "Os dígitos verificadores do CPF/CNPJ não conferem."],
 ]);
 
 export const SETTINGS_ERRORS: ReadonlyMap<string, string> = new Map([

@@ -79,30 +79,4 @@ describe("provider event versions", () => {
 
     expect(row?.provider_status).toBe("refunded");
   });
-
-  test("migration repairs mixed-clock metadata without changing historical credit records", async () => {
-    await using transaction = await openRollbackTransaction();
-    const { sql } = transaction;
-    const id = await request(sql);
-    await sql`SELECT public.apply_mercado_pago_status(${id}, '123', 'approved', 5000, '2026-10-01T12:00:00Z')`;
-    await actAsSuperuser(sql);
-    await sql`UPDATE public.topup_requests SET provider_updated_at = '2099-01-01T00:00:00Z' WHERE id = ${id}`;
-    const before =
-      await sql`SELECT id, amount_cents, reference_id, created_at FROM public.wallet_transactions WHERE reference_id = ${id}`;
-
-    await sql.unsafe(
-      await Bun.file(new URL("../V15__provider_event_versions.sql", import.meta.url)).text(),
-    );
-    const after =
-      await sql`SELECT id, amount_cents, reference_id, created_at FROM public.wallet_transactions WHERE reference_id = ${id}`;
-    const [row] =
-      await sql`SELECT status, provider_status, provider_updated_at FROM public.topup_requests WHERE id = ${id}`;
-
-    expect(after).toEqual(before);
-    expect(row).toEqual({
-      status: "confirmed",
-      provider_status: "approved",
-      provider_updated_at: null,
-    });
-  });
 });

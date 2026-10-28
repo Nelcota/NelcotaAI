@@ -229,7 +229,7 @@ describe("apply_mercado_pago_status", () => {
 
     const [entry] = await sql`
       SELECT description FROM public.wallet_transactions WHERE reference_id = ${requestId}`;
-    expect(entry).toEqual({ description: "Credit card top-up" });
+    expect(entry).toEqual({ description: "Recarga via cartão de crédito" });
   });
 
   test("still credits a Pix paid after the customer withdrew it", async () => {
@@ -262,7 +262,7 @@ describe("apply_mercado_pago_status", () => {
     const [request] = await sql`
       SELECT cancel_reason FROM public.topup_requests WHERE id = ${requestId}`;
     expect(status).toBe("cancelled");
-    expect(request).toEqual({ cancel_reason: "The card payment was not approved." });
+    expect(request).toEqual({ cancel_reason: "O pagamento com cartão não foi aprovado." });
     expect(await readBalanceInCents(sql, organizationId)).toBe(0);
   });
 

@@ -14,7 +14,7 @@ import { Panel } from "@/components/panel";
 import { MAX_INSTALLMENTS, PIX_EXPIRATION_IN_MINUTES } from "@/payments";
 import { formatCents } from "@/shared/format";
 
-import { RequestTopupDialog } from "./request-topup-dialog";
+import { RequestTopupDialog } from "./checkout/request-topup-dialog";
 import { pixSettingsQuery } from "./topups.queries";
 
 interface Step {
