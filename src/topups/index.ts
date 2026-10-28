@@ -12,6 +12,7 @@ export {
   pixSettingsQuery,
 } from "./topups.queries";
 export { averageOf, lastMonthChange, yearOverYear } from "./overview/trend";
+export { describePendingTopupNotifications } from "./pending-notifications";
 
 export { useTopupSynchronization } from "./reconciliation/use-topup-synchronization";
 

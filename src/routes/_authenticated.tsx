@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import { pendingRequestsQuery } from "@/admin";
+import { describePendingRequestNotifications, pendingRequestsQuery } from "@/admin";
 import {
   ChangePasswordDialog,
   currentProfileQuery,
@@ -20,6 +20,7 @@ import {
 } from "@/auth";
 import { AppShell, type NavigationItem } from "@/layout";
 import {
+  describePendingTopupNotifications,
   pendingTopupRequestsQuery,
   useTopupSynchronization,
   usePendingPaymentReconciliation,
@@ -75,11 +76,17 @@ function AuthenticatedLayout() {
       items={items}
       notifications={
         isAdmin
-          ? { to: "/admin", label: "Pedidos pendentes", active: adminPendingCount > 0 }
+          ? {
+              to: "/admin",
+              label: "Ver pedidos pendentes",
+              emptyMessage: "Nenhum pedido aguardando decisão.",
+              items: describePendingRequestNotifications(pending.data ?? []),
+            }
           : {
               to: "/recargas",
-              label: "Recargas aguardando confirmação",
-              active: customerPendingCount > 0,
+              label: "Ver minhas recargas",
+              emptyMessage: "Nenhuma recarga aguardando confirmação.",
+              items: describePendingTopupNotifications(pendingTopups.data ?? []),
             }
       }
       userName={profile.data?.name ?? null}

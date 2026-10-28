@@ -37,11 +37,21 @@ export interface NavigationItem {
   readonly hasNews?: boolean;
 }
 
+/** One line of the bell menu, such as a request waiting for a decision. */
+export interface NotificationItem {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+}
+
 interface NotificationsProps {
+  /** Page that handles the items; every line and the footer link open it. */
   readonly to: RoutePath;
+  /** Name of that page in the footer link, such as "Ver pedidos pendentes". */
   readonly label: string;
-  /** Lights the orange dot on the bell. */
-  readonly active: boolean;
+  readonly emptyMessage: string;
+  /** Pending items, newest first. The bell lights its dot while there is at least one. */
+  readonly items: readonly NotificationItem[];
 }
 
 interface AppShellProps {
@@ -89,7 +99,7 @@ export function AppShell({
         <TopNavigation items={items} pathname={pathname} />
         <div className="flex items-center justify-self-end gap-1 sm:gap-2">
           <ThemeButton />
-          <NotificationsLink {...notifications} />
+          <NotificationsMenu {...notifications} />
           <AccountMenu
             userName={userName}
             userEmail={userEmail}
@@ -196,12 +206,50 @@ function ThemeButton() {
   );
 }
 
-function NotificationsLink({ to, label, active }: NotificationsProps) {
+/** Lines shown in the bell menu; the footer link leads to the rest. */
+const MAX_NOTIFICATIONS_SHOWN = 5;
+
+function NotificationsMenu({ to, label, emptyMessage, items }: NotificationsProps) {
+  const shown = items.slice(0, MAX_NOTIFICATIONS_SHOWN);
   return (
-    <Link to={to} aria-label={label} className={HEADER_BUTTON_CLASS}>
-      <BellIcon aria-hidden="true" />
-      {active && <NewsDot />}
-    </Link>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button type="button" aria-label="Notificações" className={HEADER_BUTTON_CLASS}>
+          <BellIcon aria-hidden="true" />
+          {items.length > 0 && <NewsDot />}
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-80">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Notificações</DropdownMenuLabel>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          {shown.length === 0 && (
+            <p className="px-2 py-3 text-sm text-muted-foreground">{emptyMessage}</p>
+          )}
+          {shown.map((item) => (
+            <DropdownMenuItem key={item.id} asChild>
+              <Link to={to} className="flex flex-col items-start gap-0.5">
+                <span className="w-full truncate font-medium">{item.title}</span>
+                <span className="w-full truncate text-xs text-muted-foreground">
+                  {item.description}
+                </span>
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link to={to} className="font-medium">
+              {label}
+              {items.length > shown.length && ` ()`}
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
