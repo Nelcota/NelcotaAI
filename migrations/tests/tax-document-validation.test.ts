@@ -35,9 +35,11 @@ test("checks random numeric CNPJs against the library", async () => {
     return prefix + CNPJ.checksum(prefix);
   });
 
+  // Sent as one comma-separated string: how bun:sql encodes an array or JSON parameter differs
+  // between Bun versions, and the pinned one turns a JavaScript array into "a,b,c".
   const rows: { valid: boolean }[] =
     await transaction.sql`SELECT internal.is_valid_tax_document(document) AS valid
-    FROM unnest(${documents}::text[]) AS document`;
+    FROM unnest(string_to_array(${documents.join(",")}, ',')) AS document`;
 
   expect(rows).toHaveLength(20);
   expect(rows.every((row) => row.valid === true)).toBe(true);
