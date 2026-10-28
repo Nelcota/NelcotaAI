@@ -1,0 +1,7 @@
+[install]
+# Save exact versions in package.json (no ^ or ~).
+exact = true
+# Refuse versions published less than 14 days ago (in seconds).
+minimumReleaseAge = 1209600
+# Approved exception: the Nelcota SDK ships alongside the server and only 0.1.x is older than 14 days.
+minimumReleaseAgeExcludes = ["@nelcota/client"]

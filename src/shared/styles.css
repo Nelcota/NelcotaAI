@@ -1,0 +1,145 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./shadcn.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --font-heading: var(--font-sans);
+  --font-sans: "Geist Variable", sans-serif;
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Visual identity based on the fintech reference: deep black canvas, raised dark panels, a
+ * colourful noisy gradient behind the page header and an orange accent. Positive changes are
+ * green, negative ones red. The orange used behind white text (#cf3e14) keeps WCAG AA contrast;
+ * the brighter orange (#ff6a3d) is used only for text and strokes on dark surfaces.
+ */
+:root {
+  --brand: #c2410c;
+  --brand-foreground: #ffffff;
+  --positive: #128a4a;
+  --negative: #c9302c;
+  --background: #f3f3f5;
+  --foreground: #141416;
+  --card: #ffffff;
+  --card-foreground: #141416;
+  --popover: #ffffff;
+  --popover-foreground: #141416;
+  --primary: #cf3e14;
+  --primary-foreground: #ffffff;
+  --secondary: #ececef;
+  --secondary-foreground: #141416;
+  --muted: #ececef;
+  --muted-foreground: #63636b;
+  --accent: #e7e7ea;
+  --accent-foreground: #141416;
+  --destructive: #c9302c;
+  --border: #e1e1e6;
+  --input: #d6d6dc;
+  --ring: #cf3e14;
+  --chart-1: #ff3d7f;
+  --chart-2: #ff7a1a;
+  --chart-3: #3b82f6;
+  --chart-4: #a855f7;
+  --chart-5: #f59e0b;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --brand: #ff6a3d;
+  --brand-foreground: #ffffff;
+  --positive: #3ddc84;
+  --negative: #ff5a5f;
+  --background: #0a0a0b;
+  --foreground: #f4f4f5;
+  --card: #141416;
+  --card-foreground: #f4f4f5;
+  --popover: #1b1b1e;
+  --popover-foreground: #f4f4f5;
+  --primary: #cf3e14;
+  --primary-foreground: #ffffff;
+  --secondary: #1f1f23;
+  --secondary-foreground: #f4f4f5;
+  --muted: #1c1c1f;
+  --muted-foreground: #9a9aa2;
+  --accent: #232327;
+  --accent-foreground: #f4f4f5;
+  --destructive: #ff5a5f;
+  --border: #242428;
+  --input: #2c2c31;
+  --ring: #ff6a3d;
+  --chart-1: #ff3d7f;
+  --chart-2: #ff7a1a;
+  --chart-3: #3b82f6;
+  --chart-4: #a855f7;
+  --chart-5: #f59e0b;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  /* Colourful, grainy band behind the page header, fading into the canvas. The dark layer keeps
+     white header text above WCAG AA contrast on every colour stop. */
+  .hero-gradient {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E"),
+      linear-gradient(rgb(0 0 0 / 0.3), rgb(0 0 0 / 0.3)),
+      radial-gradient(120% 140% at 0% 100%, #9be3b0 0%, transparent 45%),
+      linear-gradient(
+        100deg,
+        #1c8f8a 0%,
+        #2b6f86 22%,
+        #b2563a 50%,
+        #ef4a2c 66%,
+        #c2286f 82%,
+        #4b2a8f 100%
+      );
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  }
+}

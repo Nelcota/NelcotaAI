@@ -1,0 +1,7 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["src/routes/**/*.tsx", "src/**/*.test.ts", "migrations/tests/*.test.ts"],
+  "project": ["src/**/*.{ts,tsx,css}", "migrations/tests/*.ts"],
+  "ignore": ["src/components/ui/**", "src/shared/database.ts"],
+  "ignoreBinaries": ["nelcota"]
+}
