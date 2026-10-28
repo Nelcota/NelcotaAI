@@ -114,6 +114,34 @@ $$;
 REVOKE EXECUTE ON FUNCTION public.admin_link_user(text, uuid, text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.admin_link_user(text, uuid, text) TO authenticated;
 
+-- Removes a person's access to their organization. The login stays in Nelcota; signing in again
+-- asks them to register a company, as a brand-new account would.
+CREATE FUNCTION public.admin_unlink_user(p_user_id uuid) RETURNS void
+    LANGUAGE plpgsql SECURITY DEFINER SET search_path = ''
+AS $$
+DECLARE
+    v_profile public.profiles%ROWTYPE;
+BEGIN
+    IF NOT public.is_platform_admin() THEN
+        RAISE EXCEPTION 'only platform admins can remove access' USING ERRCODE = '42501';
+    END IF;
+
+    SELECT * INTO v_profile FROM public.profiles p WHERE p.user_id = p_user_id FOR UPDATE;
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'account % is not linked to any organization', p_user_id
+            USING ERRCODE = 'P0002';
+    END IF;
+    IF v_profile.is_platform_admin THEN
+        RAISE EXCEPTION 'account % is a platform admin, not a customer', p_user_id
+            USING ERRCODE = 'P0014';
+    END IF;
+
+    DELETE FROM public.profiles WHERE user_id = p_user_id;
+END
+$$;
+REVOKE EXECUTE ON FUNCTION public.admin_unlink_user(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.admin_unlink_user(uuid) TO authenticated;
+
 -- Manual balance adjustment by the platform admin.
 CREATE FUNCTION public.admin_adjust_balance(
     p_organization_id uuid,

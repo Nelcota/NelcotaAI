@@ -39,6 +39,7 @@ import {
 } from "./admin.queries";
 import { EditOrganizationDialog } from "./edit-organization-dialog";
 import { LinkUserDialog } from "./link-user-dialog";
+import { RemoveAccessDialog } from "./remove-access-dialog";
 
 const LEDGER_TYPE_LABELS = { topup: "Recarga", adjustment: "Ajuste" } as const;
 
@@ -169,6 +170,7 @@ export function CustomerDetailPage({ organizationId }: { readonly organizationId
                       {ROLE_LABELS[member.role]} · desde {formatDate(member.created_at)}
                     </p>
                   </div>
+                  <RemoveAccessDialog userId={member.user_id} personName={member.name} />
                 </li>
               ))}
             </ul>

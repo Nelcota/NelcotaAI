@@ -271,6 +271,7 @@ export interface Database {
       admin_cancel_topup: { Args: { p_request_id: string; p_reason: string }; Returns: undefined };
       admin_confirm_topup: { Args: { p_request_id: string; p_payment_reference?: string }; Returns: boolean };
       admin_link_user: { Args: { p_email: string; p_organization_id: string; p_name: string }; Returns: string };
+      admin_unlink_user: { Args: { p_user_id: string }; Returns: undefined };
       apply_mercado_pago_status: { Args: { p_request_id: string; p_provider_payment_id: string; p_provider_status: string; p_amount_cents: number | string; p_provider_updated_at?: string }; Returns: string };
       attach_topup_receipt: { Args: { p_request_id: string; p_receipt_path: string }; Returns: undefined };
       cancel_my_topup: { Args: { p_request_id: string }; Returns: undefined };
