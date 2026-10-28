@@ -75,7 +75,7 @@ src/
   components/  shared UI (shadcn/ui under components/ui)
   shared/      formatting, money, dates, env, generated database types
   routes/      TanStack Start file routes (pt-BR URLs)
-migrations/    SQL migrations V1..V17 and their database tests
+migrations/    SQL migrations V1..V3 and their database tests
 ```
 
 Each feature folder is a package with a public `index.ts`; other packages import only through it. Money is handled in cents, dates in UTC, and every visible string is in Brazilian Portuguese.

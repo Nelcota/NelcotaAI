@@ -89,25 +89,25 @@ export interface Database {
           id: boolean;
           pix_key: string | null;
           pix_receiver_name: string | null;
+          pix_city: string | null;
           minimum_topup_cents: number | string;
           maximum_topup_cents: number | string;
-          pix_city: string | null;
         };
         Insert: {
           id?: boolean;
           pix_key?: string | null;
           pix_receiver_name?: string | null;
+          pix_city?: string | null;
           minimum_topup_cents: number | string;
           maximum_topup_cents: number | string;
-          pix_city?: string | null;
         };
         Update: {
           id?: boolean;
           pix_key?: string | null;
           pix_receiver_name?: string | null;
+          pix_city?: string | null;
           minimum_topup_cents?: number | string;
           maximum_topup_cents?: number | string;
-          pix_city?: string | null;
         };
         Relationships: [];
       };
@@ -117,63 +117,63 @@ export interface Database {
           organization_id: string;
           amount_cents: number | string;
           status: "pending" | "confirmed" | "cancelled" | "withdrawn";
+          payment_method: "manual_pix" | "pix" | "card";
           requested_by: string;
           decided_by: string | null;
           decided_at: string | null;
           cancel_reason: string | null;
-          created_at: string;
           payment_reference: string | null;
           receipt_path: string | null;
-          payment_method: "manual_pix" | "pix" | "card";
           provider_payment_id: string | null;
           provider_status: string | null;
-          pix_qr_code: string | null;
-          pix_expires_at: string | null;
           provider_updated_at: string | null;
           payment_prepared_at: string | null;
+          pix_qr_code: string | null;
+          pix_expires_at: string | null;
           duplicate_of_request_id: string | null;
+          created_at: string;
         };
         Insert: {
           id?: string;
           organization_id: string;
           amount_cents: number | string;
           status?: "pending" | "confirmed" | "cancelled" | "withdrawn";
+          payment_method?: "manual_pix" | "pix" | "card";
           requested_by: string;
           decided_by?: string | null;
           decided_at?: string | null;
           cancel_reason?: string | null;
-          created_at?: string;
           payment_reference?: string | null;
           receipt_path?: string | null;
-          payment_method?: "manual_pix" | "pix" | "card";
           provider_payment_id?: string | null;
           provider_status?: string | null;
-          pix_qr_code?: string | null;
-          pix_expires_at?: string | null;
           provider_updated_at?: string | null;
           payment_prepared_at?: string | null;
+          pix_qr_code?: string | null;
+          pix_expires_at?: string | null;
           duplicate_of_request_id?: string | null;
+          created_at?: string;
         };
         Update: {
           id?: string;
           organization_id?: string;
           amount_cents?: number | string;
           status?: "pending" | "confirmed" | "cancelled" | "withdrawn";
+          payment_method?: "manual_pix" | "pix" | "card";
           requested_by?: string;
           decided_by?: string | null;
           decided_at?: string | null;
           cancel_reason?: string | null;
-          created_at?: string;
           payment_reference?: string | null;
           receipt_path?: string | null;
-          payment_method?: "manual_pix" | "pix" | "card";
           provider_payment_id?: string | null;
           provider_status?: string | null;
-          pix_qr_code?: string | null;
-          pix_expires_at?: string | null;
           provider_updated_at?: string | null;
           payment_prepared_at?: string | null;
+          pix_qr_code?: string | null;
+          pix_expires_at?: string | null;
           duplicate_of_request_id?: string | null;
+          created_at?: string;
         };
         Relationships: [
           { foreignKeyName: "topup_requests_duplicate_of_request_id_fkey"; columns: ["duplicate_of_request_id"]; referencedRelation: "topup_requests"; referencedColumns: ["id"] },
@@ -184,7 +184,7 @@ export interface Database {
         Row: {
           id: string;
           organization_id: string;
-          type: "topup" | "usage" | "refund" | "adjustment";
+          type: "topup" | "adjustment";
           amount_cents: number | string;
           reference_id: string | null;
           description: string;
@@ -194,7 +194,7 @@ export interface Database {
         Insert: {
           id?: string;
           organization_id: string;
-          type: "topup" | "usage" | "refund" | "adjustment";
+          type: "topup" | "adjustment";
           amount_cents: number | string;
           reference_id?: string | null;
           description: string;
@@ -204,7 +204,7 @@ export interface Database {
         Update: {
           id?: string;
           organization_id?: string;
-          type?: "topup" | "usage" | "refund" | "adjustment";
+          type?: "topup" | "adjustment";
           amount_cents?: number | string;
           reference_id?: string | null;
           description?: string;
@@ -293,7 +293,7 @@ export interface Database {
       member_role: "owner" | "member";
       topup_request_status: "pending" | "confirmed" | "cancelled" | "withdrawn";
       topup_payment_method: "manual_pix" | "pix" | "card";
-      wallet_transaction_type: "topup" | "usage" | "refund" | "adjustment";
+      wallet_transaction_type: "topup" | "adjustment";
     };
   };
 }

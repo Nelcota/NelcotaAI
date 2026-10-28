@@ -142,7 +142,7 @@ export const requestHistoryRowSchema = z.object({
 /** A ledger entry. */
 export const ledgerEntrySchema = z.object({
   id: z.string(),
-  type: z.enum(["topup", "usage", "refund", "adjustment"]),
+  type: z.enum(["topup", "adjustment"]),
   amount_cents: bigintSchema,
   description: z.string(),
   created_at: z.string(),

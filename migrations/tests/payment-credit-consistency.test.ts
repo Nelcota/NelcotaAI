@@ -191,25 +191,4 @@ describe("uncredited payment reversals", () => {
     expect(request).toEqual({ status: "confirmed", provider_status: "refunded" });
     expect(await readBalanceInCents(sql, fixture.organizationId)).toBe(5000);
   });
-
-  test("migration closes historical uncredited reversals without changing ledger records", async () => {
-    await using transaction = await openRollbackTransaction();
-    const { sql } = transaction;
-    const fixture = await setup(sql);
-    await actAsSuperuser(sql);
-    await sql`UPDATE public.topup_requests SET provider_payment_id = '123456789', provider_status = 'refunded' WHERE id = ${fixture.onlineId}`;
-    const before =
-      await sql`SELECT id, amount_cents, reference_id, created_at FROM public.wallet_transactions WHERE organization_id = ${fixture.organizationId}`;
-
-    await sql.unsafe(
-      await Bun.file(new URL("../V16__payment_credit_consistency.sql", import.meta.url)).text(),
-    );
-    const after =
-      await sql`SELECT id, amount_cents, reference_id, created_at FROM public.wallet_transactions WHERE organization_id = ${fixture.organizationId}`;
-    const [request] =
-      await sql`SELECT status, provider_status FROM public.topup_requests WHERE id = ${fixture.onlineId}`;
-
-    expect(after).toEqual(before);
-    expect(request).toEqual({ status: "cancelled", provider_status: "refunded" });
-  });
 });
