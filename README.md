@@ -30,7 +30,7 @@
 
 ## Getting started
 
-Requirements: [Bun](https://bun.sh), Docker and the `nelcota` CLI (0.5.x).
+Requirements: [Bun](https://bun.sh), Docker and the `nelcota` CLI 0.5.5 (the version CI runs; see `.github/workflows/check.yml`).
 
 ```sh
 bun install
