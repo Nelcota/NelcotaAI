@@ -56,12 +56,24 @@ Mercado Pago credentials and the webhook secret are listed in `.env.example`. A 
 | ------------------ | ------------------------------------------------------------------- |
 | `bun run dev`      | Development server with hot reload                                  |
 | `bun run build`    | Production build in `dist/`                                         |
+| `bun run start`    | Serves the production build (port from `PORT`, default 3000)        |
 | `bun run check`    | Formatting, Oxlint, types, Knip and unit tests (no database needed) |
 | `bun run test:db`  | SQL functions and RLS against the running `nelcota dev` database    |
 | `bun run format`   | Formats everything with Oxfmt                                       |
 | `bun run db:types` | Regenerates the database types after a migration                    |
 
 Git hooks (Lefthook) run the same checks before every commit. CI runs them on every push and pull request, plus the production build, a dependency audit and the database tests against a fresh `nelcota dev` environment.
+
+## Deploying
+
+The `Dockerfile` builds the app and serves it with Bun on port 3000. Browser variables are baked in at build time; server secrets come from the environment at runtime:
+
+```sh
+docker build --build-arg VITE_NELCOTA_URL=https://api.example.com -t nelcota-ai .
+docker run --env-file .env -p 3000:3000 nelcota-ai
+```
+
+Point `APP_URL` at the public HTTPS address so Mercado Pago can reach the webhook.
 
 ## Project layout
 
